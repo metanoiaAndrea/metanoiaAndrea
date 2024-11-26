@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【ＶＩＳＵＡＬ　ＭＥＴＡＮＯＩＡ】</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+
+    <!-- Contenedor de la carta -->
+    <div id="cover-page">
+        <div id="cover-content">
+        <h3><i>Para mi hermanaza:</i></h3>
+        <p><i>En este día especial, quiero que sepas lo agradecido que estoy por tenerte a mi lado. Deseo que sigamos construyendo juntos este camino, acumulando momentos inolvidables y enfrentando cualquier desafío que la vida nos presente. Eres una parte fundamental de mi historia, y no puedo imaginar mi futuro sin tu amistad y complicidad.
+            </i></p>
+        <button id="reveal-button">Por eso eres... →</button>
+        </div>
+    </div>
+
+    <!-- Texto en el centro -->
+  <div id="center-text"><i>ANDREA ES:</i></div>
+
+  <!-- Texto en el pie de página -->
+  <div id="footer-text"><i>Feliz 26º Cumpleaños</i></div>
+
+
+  <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const revealButton = document.getElementById('reveal-button');
+    const coverPage = document.getElementById('cover-page');
+    const center_text = document.getElementById('center-text');
+    const footer_text = document.getElementById('footer-text');
+
+    // Ocultar el texto inicialmente
+    center_text.classList.add('hide');
+    footer_text.classList.add('hide');
+
+    // Iniciar reproducción de la primera canción con interacción del usuario
+    const playAudioOnInteraction = () => {
+        audio.play().catch(err => console.error("Error al intentar reproducir:", err));
+        window.removeEventListener('click', playAudioOnInteraction);
+        window.removeEventListener('touchstart', playAudioOnInteraction);
+    };
+
+    // Agregar listeners de interacción
+    window.addEventListener('click', playAudioOnInteraction);
+    window.addEventListener('touchstart', playAudioOnInteraction);
+
+    // Revelar contenido al hacer clic en el botón
+    revealButton.addEventListener('click', () => {
+        coverPage.classList.add('hidden');
+        center_text.classList.add('shown');
+        footer_text.classList.add('shown');
+    });
+});
+    // Música
+
+    
+
+const songs = [
+    "music/eso.mp3", // WarmPalette - "Redbone"
+    "music/gata.mp3", // BlueMonochromePalette - "Night Swimming"
+    "music/rainbow.mp3",
+    "music/vida.mp3",
+    "music/videogames.mp3",
+    "music/holocene.mp3",
+    "music/apocalypse.mp3",
+    "music/sun.mp3",  // EarthTonesPalette - "Holocene"
+];
+
+const canvas1 = document.getElementById('myCanvas');
+
+let currentSongIndex = -1;
+let audio = new Audio(songs[currentSongIndex - 1]);
+audio.loop = true; // Repetir la canción actual si no cambia
+audio.volume = 0.5; // Comenzar con volumen bajo para transición suave
+audio.play(); // Iniciar la reproducción
+
+function changeSong() {
+    console.log(0);
+    const fadeOutInterval = setInterval(() => {
+        if (audio.volume > 0) {
+            audio.volume = Math.max(0, audio.volume - 0.1); // Reducir volumen
+        } else {
+            clearInterval(fadeOutInterval); // Detener fade-out
+
+            // Cambiar a la siguiente canción
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            audio.src = songs[currentSongIndex];
+            audio.play();
+
+            // Iniciar fade-in
+            const fadeInInterval = setInterval(() => {
+                if (audio.volume < 1) {
+                    audio.volume = Math.min(1, audio.volume + 0.1); // Aumentar volumen
+                } else {
+                    clearInterval(fadeInInterval); // Detener fade-in
+                }
+            }, 10); // Ajusta la velocidad de fade-in según prefieras
+        }
+    }, 1); // Ajusta la velocidad de fade-out según prefieras
+}
+changeSong()
+document.getElementById('reveal-button').addEventListener('onload',changeSong);
+canvas1.addEventListener('click', changeSong);
+  </script>
+  <script  src="https://cdn.jsdelivr.net/gh/josephg/noisejs/perlin.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.0/opentype.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/paper@0.12.15/dist/paper-full.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
